@@ -16,9 +16,11 @@ def battle(soldiers):
         odd_score += o
 
     if even_score > odd_score:
-        print('Evens win the battle by a score   of {}:{}'.format(even_score, odd_score))
+        print('Evens win the battle by a score of {}:{}'
+                            .format(even_score, odd_score))
     elif odd_score > even_score:
-        print('Odds win the battle by a score   of {}:{}'.format(odd_score, even_score))
+        print('Odds win the battle by a score of {}:{}'
+                            .format(odd_score, even_score))
     elif odd_score == even_score:
         print('Tie! {}:{}'.format(even_score, odd_score))
 
