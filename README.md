@@ -15,3 +15,9 @@ That's work with data include in example input, but i couldn’t leave it like t
 
 That's why inspired by stack overflow I created new class Field - making every field unique. That gave me also ability to put information 
 about previous move, cost and if is visited in the object.
+
+
+#Usage
+Example
+
+python3 minimum_effort_2.0.py -f data
