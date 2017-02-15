@@ -15,7 +15,7 @@ class Map():
         self.parse_nodes(data)
         self.algorithm()
 
-    #Funkcja sprawdzajaca mozliwe ruchy
+    #Check available moves
     def set_adjacency(self, data):
         map = data
         n = len(map) - 1
@@ -61,7 +61,7 @@ class Map():
         print(visited[goal])
 
 
-#Pierwszy problem - jak wczytac dane z pliku by umozliwialy przetwarzanie wielu map?
+#First problem - how to parse data from file to process more than one map?
 def load_file(path):
     rows = []
     with open(path) as file:
@@ -76,7 +76,7 @@ def load_file(path):
     return rows
 
 
-#Argumenty z cmd
+#cmd arguments
 parser = argparse.ArgumentParser()
 
 parser.add_argument('-f', '--file_path',\

@@ -1,6 +1,7 @@
 #print("{0:b}".format(10))
+import sys
 
-soldiers = [23,-3, 32, -24]# [7, -3, -14, 6] #[21, -3, 20]
+soldiers = [7, -3, 32, -24]# [7, -3, -14, 6] #[21, -3, 20]
 bin_solders = []
 even_team = []
 odd_team = []
@@ -36,7 +37,12 @@ def set_teams(soldiers):
 
 
 def dec_2_bin(num):#moze jakies wyjatki, check if int
-    return "{0:b}".format(num)
+    try:
+        num = int(num)
+        return "{0:b}".format(num)
+    except ValueError:
+        print('Not a number!')
+        sys.exit(0)
 
 
 def count_solders(bin_num, team):
@@ -53,6 +59,11 @@ def count_solders(bin_num, team):
 
 
 def is_even(num):
-    return num % 2 == 0
+    try:
+        num = int(num)
+        return num % 2 == 0
+    except ValueError:
+        print('Not a number!')
+        sys.exit(0)
 
 battle(soldiers)
