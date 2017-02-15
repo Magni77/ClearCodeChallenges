@@ -1,37 +1,67 @@
 import argparse
-import csv
-import math
 from collections import defaultdict
+
 
 class Map():
     def __init__(self, map):
-        self.rows = []
+        self.nodes = []
         self.data = map
-        self.n = int(math.sqrt(len(map)))
-        self.adjacency_list = []
-        print(map)
+        self.edges = defaultdict(list)
+        self.fields_dict = []
 
+    def start(self):
+        data = self.data
+        self.set_adjacency(data)
+        self.parse_nodes(data)
+        self.algorithm()
+
+    #Funkcja sprawdzajaca mozliwe ruchy
     def set_adjacency(self, data):
-        tmp = []
-        for node in data:
-            pass
+        map = data
+        n = len(map) - 1
+        x = 0
+        for idx, val in enumerate(map):
+            for i, v in enumerate(val):
+                if i < n:
+                    self.edges[int(val[i])].append(int(val[i + 1]))
+                if idx < n:
+                    self.edges[int(val[i])].append(int(map[idx + 1][i]))
+                x += 1
+
+    def parse_nodes(self, data):
+        for x in data:
+            for l in x:
+                self.nodes.append(int(l))
+
+    def algorithm(self):
+        nodes = self.nodes
+        visited = {nodes[0]: nodes[0]}
+        goal = nodes[-1]
+        path = {}
+        while nodes:
+            min_node = None
+            for node in nodes:
+                if node in visited:
+                    if min_node is None:
+                        min_node = node
+                    elif visited[node] < visited[min_node]:
+                        min_node = node
+            if min_node is None:
+                break
+
+            nodes.remove(min_node)
+            current_weight = visited[min_node]
+
+            for edge in self.edges[min_node]:
+                weight = current_weight + edge
+                if edge not in visited or weight < visited[edge]:
+                    visited[edge] = weight
+                    path[edge] = min_node
+
+        print(visited[goal])
 
 
-parser = argparse.ArgumentParser()
-
-parser.add_argument('-f', '--file_path',\
-                    help="Path to file with data",  default=False)
-
-args = parser.parse_args()
-
-
-'''
-    Pierwszy problem - jak wczytac dane z pliku by móc przetwarzac wiele map?
-        -Stworzyc liste, w ktorej każdy index będzie osobną mapą.
-
-'''
-
-
+#Pierwszy problem - jak wczytac dane z pliku by umozliwialy przetwarzanie wielu map?
 def load_file(path):
     rows = []
     with open(path) as file:
@@ -39,32 +69,24 @@ def load_file(path):
             tmp = []
             for _ in range(int(l)):
                 line = file.readline().split(',')
-                #for x in line:
                 tmp.append(line)
+
             rows.append(tmp)
 
     return rows
 
-data = load_file('data')
-for d in data:
-    Map(d)
 
-edges = defaultdict(list)
-# for d in data:
-#     edges[d].append(d)
+#Argumenty z cmd
+parser = argparse.ArgumentParser()
 
-print('here')
-map=data[1]
-n = len(map) -1
-for idx, val in enumerate(map):
-    print(val)
-    for i, v in enumerate(val):
-        if i < n:
-            edges[int(val[i])].append(int(val[i+1]))
-        if idx < n:
-            edges[int(val[i])].append(int(map[idx+1][i]))
-        if idx == n and i == n:
-            edges[int(val[i])].append(False)
+parser.add_argument('-f', '--file_path',\
+                    help="Path to file with data",  default=False)
 
+args = parser.parse_args()
 
-print(edges)
+if args.file_path:
+    data = load_file(args.file_path)
+    for d in data:
+        Map(d).start()
+else:
+    print('I need file path! [-f "path"]')
